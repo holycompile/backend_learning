@@ -1,11 +1,10 @@
 //taking input from user
 //1st server making 
-const http=require('http');
+
 const fs=require('fs');
 
-const server = http.createServer(
-    (req, res) => {
-    console.log(req.url, req.method, req.headers);
+const userRequestHandler = (req, res) => {
+    console.log(req.url, req.method);
 
     if(req.url==='/'){
        res.write('<h1>Welcome to Home page</h1>');
@@ -31,7 +30,30 @@ const server = http.createServer(
 
     }
     else if (req.url.toLowerCase() ==="/submit-details" && req.method==="POST"){
-        fs.writeFileSync('user.txt', 'DUMMY DATA');
+       
+        //buffer chunks 
+        const body=[];
+
+        //chunks of data 
+        req.on('data', (chunk) => {
+            console.log(chunk);
+            body.push(chunk); // here we are pushing the chunks of data into the body array
+        });
+        req.on('end', () => {
+            const fullbody = Buffer.concat(body).toString();
+            console.log(fullbody);
+            //parsing the URL encoded data
+            const params = new URLSearchParams(fullbody);
+            //const jsonObject={};
+            //for(const [key, value] of params.entries()){
+            //   jsonObject[key]=value;
+            // }
+           const jsonObject = Object.fromEntries(params.entries()); //shortcut to convert URLSearchParams to JSON object
+            console.log(jsonObject);
+            //Output: { name: 'John Doe', gender: 'male'
+            fs.writeFileSync('user.txt', JSON.stringify(jsonObject));
+        })
+        
         res.statusCode=302;
         res.setHeader('Location', '/');
         return res.end();
@@ -41,7 +63,7 @@ const server = http.createServer(
        return res.end();
     }
     else{
-        res.setHeader('Context-Type', 'test/html');
+        res.setHeader('Context-Type', 'text/html');
         res.write('<html>');
         res.write('<head><title>Complete Coding </title></heading>');
         res.write('<body><h1> hello ike and share </h1></body>')
@@ -50,13 +72,7 @@ const server = http.createServer(
 
     }
     
-    } 
-);
+} 
 
-const PORT=3001;
-server.listen( PORT, () =>{
-    console.log(`Server Running on address http://localhost:${PORT}`);
-});
-// Use the browser to access: 
-// http://localhost:3001/
-// http://localhost:3001/products
+module.exports = userRequestHandler;
+
