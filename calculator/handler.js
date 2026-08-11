@@ -1,6 +1,6 @@
 
-const {sumRequestHandler}=require('./sum.js')
-
+const {sumRequestHandler}=require('./sum.js');
+const {homeRequestHandler}=require('./home.js');
 
 
 const requestHandler=(req, res)=>{
@@ -13,18 +13,8 @@ const requestHandler=(req, res)=>{
         return res.end();
     }
     else if(req.url.toLowerCase()==='/calculator' ){
-        res.write("<h1> Welcome to Calculator Page </h1>");
-        res.write(` <html> 
-                    <body>
-                    <form  action="/cal-result" method="POST">
-                    <input type="text" placeholder="Enter the 1st no" name="first"/>
-                    <input type="text" placeholder="Enter the 2nd no" name="second"/>
-                    <input type="submit" value="sum">
-                    <input />
-                    </form>
-                    </body>
-                    </html>`);
-        return res.end();
+
+        return homeRequestHandler(req,res);
     }
     else if(req.url.toLowerCase()==='/cal-result')
         {

@@ -7,6 +7,7 @@ const sumRequestHandler=(req, res)=>{
         console.log(chunk);
         body.push(chunk)
     });
+    
     req.on('end',()=>{
         const fullbody=Buffer.concat(body).toString();
         console.log(fullbody);
@@ -15,7 +16,19 @@ const sumRequestHandler=(req, res)=>{
         console.log(jsonObject);
         const result= Number(jsonObject.first)+Number(jsonObject.second);
         console.log(result);
+
+        res.setHeader('Content-type','text/html');
+        res.write(`
+        <html>
+        <body>
+            <h1>The sum of the two numbers are: ${result}</h1>
+        </body>
+        </html>
+        
+        `);
+        return res.end();
     });
+    
     
 }
 
