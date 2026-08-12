@@ -1,12 +1,9 @@
 const http=require('http');
-const testingSyntax=require('./syntax.js')
+const requestHandler=require('./user');
 
-const server= http.createServer((req,res)=>{
-    console.log(req.url, res.method);
-    testingSyntax();
-});
+const server= http.createServer(requestHandler);
 
-const PORT= 3003;
+const PORT= 3002;
 server.listen(PORT, ()=>{
-    console.log(`Server is running at http://localhost:${PORT}`)
+    console.log(`Server is running at http://localhost:${PORT}`);
 });
