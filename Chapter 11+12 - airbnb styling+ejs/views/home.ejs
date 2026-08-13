@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+
+  <body class="bg-gray-100 min-h-screen">
+
+<%- include('partials/nav') %>
+
+    <main class="flex justify-center pt-10 px-4">
+    <div class="w-full max-w-3xl">
+      <h1 class="text-3xl font-bold text-red-500 text-center mb-8">
+        Here are our registered homes:
+      </h1>
+      <!--Here now we are using the concept of EJS (embedded javascript)
+          for flow control : <%  %>
+          for output: <%= %> -->
+      <ul class="bg-white rounded-xl shadow">
+          
+          <% registeredHomes.forEach(home=>{ %>
+            <li class="px-6 py-4 border-b border-gray-200 last:border-b-0 text-gray-800">
+              <%= home.houseName %>
+            </li>
+
+          <% });   %>
+          
+          
+        </ul>
+    </div>
+  </main>
+  </body>
+</html>
+
